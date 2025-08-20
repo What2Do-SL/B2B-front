@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --color-green-50: #EAFCE8;
+  --color-green-100: #D5F9D1;
+  --color-green-200: #AAF5A8;
+  --color-green-300: #80D975;
+  --color-green-400: #55B947;
+  --color-green-500: #2B851A;
+  --color-green-600: #227238;
+  --color-green-700: #1A8A0F;
+  --color-green-800: #115C0A;
+  --color-green-900: #092E05;
+  --color-green-950: #041703;
+
+  --color-beige: #E5E4CC;
+
+  /* Poppins font */
+  --font-sans: 'Poppins', system-ui, sans-serif;
+}
+
+/* Remove dark mode - keep light only */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
