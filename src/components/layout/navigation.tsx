@@ -15,17 +15,8 @@ import {
   useRef,
   useState,
 } from "react";
+import { DockItemProps, DockProps } from "@/types/ui";
 
-interface DockItemProps {
-  children: any;
-  className?: string;
-  onClick?: () => void;
-  mouseX: any;
-  spring: any;
-  distance: number;
-  magnification: number;
-  baseItemSize: number;
-}
 
 function DockItem({
   children,
@@ -115,16 +106,6 @@ function DockIcon({ children, className = "" }: any) {
   );
 }
 
-interface DockProps {
-  items: any[];
-  className?: string;
-  spring?: any;
-  magnification?: number;
-  distance?: number;
-  panelHeight?: number;
-  dockHeight?: number;
-  baseItemSize?: number;
-}
 
 export default function Dock({
   items,

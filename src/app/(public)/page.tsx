@@ -1,5 +1,11 @@
+"use client";
+
+import { useState } from "react";
+import FormModal from "@/components/modals/FormModal";
 
 export default function Home() {
+  const [showRegister, setShowRegister] = useState(false);
+
   return (
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center"
@@ -18,11 +24,22 @@ export default function Home() {
             empresa.
           </p>
 
-          <button className="bg-green-500 hover:bg-green-600 text-white md:inline-flex items-center justify-center border-0 rounded-[calc(0.45rem-0.2rem)] p-4 h-full font-medium cursor-pointer transition-colors duration-300">
-            Registrarme
+          <button
+            className="bg-green-500 hover:bg-green-600 text-beige md:inline-flex items-center justify-center border-0 rounded-[calc(0.45rem-0.2rem)] p-4 h-full font-medium cursor-pointer transition-colors duration-300"
+            onClick={() => setShowRegister(true)}
+          >
+            Registrarse
           </button>
         </div>
       </div>
+      <FormModal
+        isOpen={showRegister}
+        onClose={() => setShowRegister(false)}
+        title="Registro"
+        variant="beige"
+      >
+        <p className="text-green-800">Registro Form</p>
+      </FormModal>
     </div>
   );
 }

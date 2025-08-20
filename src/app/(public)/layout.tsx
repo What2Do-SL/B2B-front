@@ -1,4 +1,8 @@
-import Header from "@/components/layout/header";
+"use client";
+
+import { useState } from "react";
+import Header from "@/components/layout/Header";
+import FormModal from "@/components/modals/FormModal";
 
 export default function PublicLayout({
   children,
@@ -7,31 +11,51 @@ export default function PublicLayout({
 }) {
   const items = [
     {
-      label: "Sobre nosotros",
+      label: "App",
       bgColor: "var(--color-green-800)",
-      textColor: "#fff",
+      textColor: "beige",
       links: [
-        { label: "Company", ariaLabel: "About Company", href: "/" },
-        { label: "Careers", ariaLabel: "About Careers", href: "/" },
+        { label: "Cómo funciona", ariaLabel: "Cómo funciona", href: "/" },
+        { label: "Precios", ariaLabel: "Precios", href: "/" },
+        { label: "Soy particular", ariaLabel: "Soy particular", href: "/" },
+        { label: "Sobre nosotros", ariaLabel: "Sobre nosotros", href: "/" },
       ],
     },
     {
       label: "Contacto",
       bgColor: "var(--color-green-800)",
-      textColor: "#fff",
+      textColor: "beige",
       links: [
-        { label: "Correo", ariaLabel: "Email us", href: "/" },
-        { label: "Instagram", ariaLabel: "Instagram", href: "/" },
-        { label: "TikTok", ariaLabel: "TikTok", href: "/" },
-        { label: "LinkedIn", ariaLabel: "LinkedIn", href: "/" },
+        {
+          label: "Email",
+          ariaLabel: "Correo",
+          href: "mailto:info@what2do.es",
+        },
+        {
+          label: "Instagram",
+          ariaLabel: "Instagram",
+          href: "https://www.instagram.com/what2do_tech/",
+        },
+        {
+          label: "TikTok",
+          ariaLabel: "TikTok",
+          href: "https://www.tiktok.com/@what2do_tech",
+        },
+        {
+          label: "LinkedIn",
+          ariaLabel: "LinkedIn",
+          href: "https://www.linkedin.com/company/what2do-es/",
+        },
       ],
     },
   ];
+  const [showLogin, setShowLogin] = useState(false);
 
   return (
     <>
       <Header
         logo="/main-logo.png"
+        logoMobile="/main-logo-short.png"
         logoAlt="W2D"
         baseColor="var(--color-green-900)"
         menuColor="var(--color-green-200)"
@@ -39,8 +63,17 @@ export default function PublicLayout({
         buttonTextColor="var(--color-green-950)"
         ease="power3.out"
         items={items}
+        setShowLogin={setShowLogin}
       />
       {children}
+      <FormModal
+        isOpen={showLogin}
+        onClose={() => setShowLogin(false)}
+        title="Iniciar sesión"
+        variant="beige"
+      >
+        <p className="text-green-800">Login Form</p>
+      </FormModal>
     </>
   );
 }

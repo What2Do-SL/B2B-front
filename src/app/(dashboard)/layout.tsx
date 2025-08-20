@@ -1,7 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { DockItem } from "@/types/ui";
 import Image from "next/image";
-import Dock from "@/components/layout/navigation";
+import Dock from "@/components/layout/Navigation";
 import { BiSolidBuildings } from "react-icons/bi";
 import { MdOutlineBadge } from "react-icons/md";
 import { IoPeople } from "react-icons/io5";
@@ -13,36 +15,37 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const dockItems = [
+  const router = useRouter();
+  const dockItems: DockItem[] = [
     {
       icon: <BiSolidBuildings />,
       label: "Empresas",
-      onClick: () => console.log("Empresas clicked"),
-      className: "",
+      onClick: () => router.push("/companies"),
+      className: "cursor-pointer",
     },
     {
       icon: <MdOutlineBadge />,
       label: "Posiciones",
-      onClick: () => console.log("Posiciones clicked"),
-      className: "",
+      onClick: () => router.push("/positions"),
+      className: "cursor-pointer",
     },
     {
       icon: <IoPeople />,
       label: "Candidatos",
-      onClick: () => console.log("Candidatos clicked"),
-      className: "",
+      onClick: () => router.push("/candidates"),
+      className: "cursor-pointer",
     },
     {
       icon: <TbInfoSquareFilled />,
       label: "Contacto",
       onClick: () => console.log("Contacto clicked"),
-      className: "",
+      className: "cursor-pointer",
     },
     {
       icon: <IoLogOutSharp />,
       label: "Cerrar sesión",
       onClick: () => console.log("Cerrar sesión clicked"),
-      className: "",
+      className: "cursor-pointer",
     },
   ];
 
