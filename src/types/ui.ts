@@ -134,3 +134,10 @@ export interface CreateCardProps {
   style?: React.CSSProperties;
   aspectRatio?: string;
 }
+
+export interface EmptyStateProps {
+  title: string;
+  description: string;
+  icon?: React.ReactNode;
+  //className?: string;
+}
