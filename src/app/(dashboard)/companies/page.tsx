@@ -36,7 +36,7 @@ export default function CompaniesPage() {
   ];
 
   const handleView = (id: string) => {
-    router.push(`/dashboard/companies/${id}`);
+    router.push(`/companies/${id}`);
   };
 
   const handleEdit = (id: string) => {
@@ -69,7 +69,7 @@ export default function CompaniesPage() {
                   title={company.name}
                   subtitle={`${company.employees} empleados`}
                   description={company.description}
-                  detailsRoute={`/dashboard/companies/${company.id}`}
+                  detailsRoute={`/companies/${company.id}`}
                   badge={<BiSolidBuildings size={20}/>}
                   onEdit={handleEdit}
                 />
