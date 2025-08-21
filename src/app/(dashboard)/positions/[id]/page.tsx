@@ -10,6 +10,7 @@ import { BiSolidBuildings } from "react-icons/bi";
 import { MdOutlineBadge } from "react-icons/md";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { IoPeople } from "react-icons/io5";
+import { FaUserLarge } from "react-icons/fa6";
 import { BsFillQuestionSquareFill } from "react-icons/bs";
 import { GrDocumentTime } from "react-icons/gr";
 import { PiSealCheckDuotone } from "react-icons/pi";
@@ -255,7 +256,7 @@ export default function PositionDetailsPage() {
                       additionalInfo={[`Expiración de enlace: ${candidate.link_expires_at}`]}
                       description={candidate.description} //put highlights here
                       detailsRoute={`/candidates/${candidate.id}`}
-                      badge={<IoPeople size={16} />}
+                      badge={<FaUserLarge size={16} />}
                     />
                   ))}
                 </div>

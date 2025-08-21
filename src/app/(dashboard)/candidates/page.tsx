@@ -8,8 +8,9 @@ import ItemList from "@/components/ui/ItemList";
 import ViewToggle from "@/components/ui/ViewToggle";
 import FormModal from "@/components/modals/FormModal";
 import CreateCard from "@/components/ui/CreateCard";
-import { MdOutlineBadge } from "react-icons/md";
+import { FaUserLarge } from "react-icons/fa6";
 import { RiFunctionAddFill } from "react-icons/ri";
+import { FaUserPlus } from "react-icons/fa6";
 import { formatDate } from "@/lib/utils";
 
 export default function CandidatesPage() {
@@ -104,12 +105,12 @@ export default function CandidatesPage() {
                 ]}
                 description={candidate.description}
                 detailsRoute={`/candidates/${candidate.id}`}
-                badge={<MdOutlineBadge size={20} />}
+                badge={<FaUserLarge size={20} />}
                 onEdit={handleEdit}
               />
             ))}
             <CreateCard
-              icon={<RiFunctionAddFill size={48} className="text-green-600" />}
+              icon={<FaUserPlus size={48} className="text-green-600" />}
               label="Añadir Candidato"
               description={`Crea un nuevo candidato ${
                 candidates.length === 0 ? "para comenzar." : ""
@@ -124,7 +125,7 @@ export default function CandidatesPage() {
             onView={handleView}
             onEdit={handleEdit}
             onCreateNew={handleCreate}
-            createIcon={<RiFunctionAddFill />}
+            createIcon={<FaUserPlus />}
             createLabel="Añadir nuevo candidato"
           />
         )}

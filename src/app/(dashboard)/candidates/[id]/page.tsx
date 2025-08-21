@@ -304,7 +304,11 @@ export default function CandidateDetailsPage() {
                 </button>
                 {showAnalysisDetails && (
                   <p className="text-green-900 mt-2">
-                    Detalles del análisis realizado
+                    Detalles del análisis realizado para {" "}
+                    <span className="font-bold">
+                      {matching_breakdown.position.title} -{" "}
+                      {matching_breakdown.position.company}
+                    </span>
                   </p>
                 )}
               </div>
