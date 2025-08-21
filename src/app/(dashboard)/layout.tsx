@@ -25,7 +25,7 @@ export default function DashboardLayout({
     },
     {
       icon: <MdOutlineBadge />,
-      label: "Posiciones",
+      label: "Puestos",
       onClick: () => router.push("/positions"),
       className: "cursor-pointer",
     },

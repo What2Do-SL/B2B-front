@@ -35,6 +35,7 @@ export default function CompaniesPage() {
       render: (value: number) => `${value} empleados`,
     },
     { key: "industry", label: "Industria" },
+    { key: "positions", label: "Puestos" },
   ];
 
    const handleCreate = () => {

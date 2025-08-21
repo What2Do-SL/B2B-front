@@ -1,8 +1,18 @@
+import PageHeader from "@/components/layout/PageHeader";
+
 export default function PositionsPage() {
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">Posiciones</h1>
-      <p className="text-gray-600">Bienvenido a la sección de posiciones!</p>
-    </div>
+    <>
+      {/* Page Header - positioned under logo */}
+      <PageHeader
+        title={`Puestos`}
+        subtitle="Gestiona y visualiza todos las ofertas de trabajo"
+      />
+
+      <div className="p-6 md:p-8 max-w-7xl mx-auto">
+        {/* Content */}
+        <div className="flex flex-wrap justify-center gap-6"></div>
+      </div>
+    </>
   );
 }
