@@ -8,6 +8,7 @@ import { MdDomainAdd } from "react-icons/md";
  */
 
 export default function CreateCard({
+  icon,
   label,
   description,
   onClick,
@@ -44,7 +45,7 @@ export default function CreateCard({
       <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center p-6">
         {/* Plus Icon */}
         <div className="mb-4 p-4 bg-green-300/30 rounded-full">
-          <MdDomainAdd size={48} className="text-green-600" />
+          {icon}
         </div>
         
         {/* Text */}

@@ -8,6 +8,7 @@ import ItemList from "@/components/ui/ItemList";
 import ViewToggle from "@/components/ui/ViewToggle";
 import FormModal from "@/components/modals/FormModal";
 import CreateCard from "@/components/ui/CreateCard";
+import { MdDomainAdd } from "react-icons/md";
 import { BiSolidBuildings } from "react-icons/bi";
 
 export default function CompaniesPage() {
@@ -38,7 +39,7 @@ export default function CompaniesPage() {
     { key: "positions", label: "Puestos" },
   ];
 
-   const handleCreate = () => {
+  const handleCreate = () => {
     setShowCreateModal(true); // Opens the create modal
   };
 
@@ -56,50 +57,49 @@ export default function CompaniesPage() {
   return (
     <>
       {/* Page Header - positioned under logo */}
-      <PageHeader 
-        title="Empresas" 
-        subtitle="Gestiona y visualiza todas tus empresas" 
+      <PageHeader
+        title="Empresas"
+        subtitle="Gestiona y visualiza todas tus empresas"
       />
 
       <div className="p-6 md:p-8 max-w-7xl mx-auto">
-        {companies.length > 0 && (
-          <div className="mb-8 flex justify-end">
-            <ViewToggle currentView={view} onToggle={setView} />
-          </div>
-        )}
+        <div className="mb-8 flex justify-end">
+          <ViewToggle currentView={view} onToggle={setView} />
+        </div>
 
         {/* Content */}
-        {companies.length > 0 ? (
-          view === "cards" ? (
-            <div className="flex flex-wrap justify-center gap-6">
-              {companies.map((company) => (
-                <ItemCard
-                  key={company.id}
-                  title={company.name}
-                  subtitle={`${company.employees} empleados`}
-                  description={company.description}
-                  detailsRoute={`/companies/${company.id}`}
-                  badge={<BiSolidBuildings size={20}/>}
-                  onEdit={handleEdit}
-                />
-              ))}
-            </div>
-          ) : (
-            <ItemList
-              items={companies}
-              columns={listColumns}
-              onView={handleView}
-              onEdit={handleEdit}
-            />
-          )
-        ) : (
-          <div className="flex justify-center items-center py-16">
+        {view === "cards" ? (
+          <div className="flex flex-wrap justify-center gap-6">
+            {companies.map((company) => (
+              <ItemCard
+                key={company.id}
+                title={company.name}
+                subtitle={`${company.employees} empleados`}
+                description={company.description}
+                detailsRoute={`/companies/${company.id}`}
+                badge={<BiSolidBuildings size={20} />}
+                onEdit={handleEdit}
+              />
+            ))}
             <CreateCard
+              icon={<MdDomainAdd size={48} className="text-green-600" />}
               label="Añadir Empresa"
-              description="Crea una nueva empresa para comenzar."
+              description={`Crea una nueva empresa ${
+                companies.length === 0 ? "para comenzar." : ""
+              }`}
               onClick={handleCreate}
             />
           </div>
+        ) : (
+          <ItemList
+            items={companies}
+            columns={listColumns}
+            onView={handleView}
+            onEdit={handleEdit}
+            onCreateNew={handleCreate}
+            createIcon={<MdDomainAdd />}
+            createLabel="Añadir nueva empresa"
+          />
         )}
 
         {/* Edit Modal */}
@@ -114,6 +114,20 @@ export default function CompaniesPage() {
             companyId={editingCompanyId}
             onSuccess={() => setShowEditModal(false)}
             onCancel={() => setShowEditModal(false)}
+          /> */}
+        </FormModal>
+
+        {/* Create Modal */}
+        <FormModal
+          isOpen={showCreateModal}
+          onClose={() => setShowCreateModal(false)}
+          title="Crear Nueva Empresa"
+          variant="green"
+        >
+          <p>Create modal</p>
+          {/* <CreateCompanyForm 
+            onSuccess={() => setShowCreateModal(false)}
+            onCancel={() => setShowCreateModal(false)}
           /> */}
         </FormModal>
       </div>

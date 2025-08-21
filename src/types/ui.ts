@@ -116,6 +116,9 @@ export interface ItemListProps {
   columns: ListColumn[];
   onView?: (id: string) => void;
   onEdit?: (id: string) => void;
+  onCreateNew: () => void;
+  createIcon?: React.ReactNode;
+  createLabel: string;
   className?: string;
   emptyMessage?: string;
   emptyDescription?: string;
@@ -127,6 +130,7 @@ export interface PageHeaderProps {
 }
 
 export interface CreateCardProps {
+  icon?: React.ReactNode;
   label: string;
   description?: string;
   onClick: () => void;
@@ -139,5 +143,4 @@ export interface EmptyStateProps {
   title: string;
   description: string;
   icon?: React.ReactNode;
-  //className?: string;
 }
