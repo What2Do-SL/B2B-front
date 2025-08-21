@@ -10,7 +10,10 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "What2do",
-  description: "La forma más inteligente de encontrar candidatos",
+  description: "La forma más inteligente de contratar",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

@@ -1,12 +1,12 @@
 import PageHeader from "@/components/layout/PageHeader";
 import BackButton from "@/components/ui/buttons/BackButton";
 
-export default function CompanyDetailsPage({ 
+export default async function CompanyDetailsPage({ 
   params 
 }: { 
-  params: { id: string } 
+  params: Promise<{ id: string }> 
 }) {
-    const companyId = params.id;
+    const { id: companyId } = await params;
   return (
     <>
       {/* Page Header - positioned under logo */}
