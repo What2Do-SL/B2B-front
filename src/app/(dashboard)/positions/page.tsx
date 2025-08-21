@@ -8,7 +8,8 @@ import ItemList from "@/components/ui/ItemList";
 import ViewToggle from "@/components/ui/ViewToggle";
 import FormModal from "@/components/modals/FormModal";
 import CreateCard from "@/components/ui/CreateCard";
-import { BiSolidBuildings } from "react-icons/bi";
+import { MdOutlineBadge } from "react-icons/md";
+import { RiFunctionAddFill } from "react-icons/ri";
 
 export default function PositionsPage() {
   const [view, setView] = useState<"cards" | "list">("cards");
@@ -17,10 +18,59 @@ export default function PositionsPage() {
   const [editingPositionId, setEditingPositionId] = useState<string>("");
   const router = useRouter();
 
+  const positions: any[] = [
+    {
+      id: 1,
+      title: "Desarrollador Frontend",
+      company: "Tech Corp",
+      level: "Senior",
+      candidates: 5,
+      generated_questions: {},
+      description: "Descripción del puesto de Desarrollador Frontend"
+    },
+    {
+      id: 2,
+      title: "Diseñador UI/UX",
+      company: "Design Studio",
+      level: "Mid",
+      candidates: 3,
+      generated_questions: {},
+      description: "Descripción del puesto de Diseñador UI/UX"
+    },
+    {
+      id: 3,
+      title: "Gerente de Marketing",
+      company: "Marketing Agency",
+      level: "Senior",
+      candidates: 2,
+      generated_questions: { blabla: ["blabla"] },
+      description: "Descripción del puesto de Gerente de Marketing"
+    },
+    {
+      id: 4,
+      title: "Desarrollador Backend",
+      company: "Creative Agency",
+      level: "Junior",
+      candidates: 4,
+      generated_questions: {},
+      description: "Descripción del puesto de Desarrollador Backend"
+    },
+    {
+      id: 5,
+      title: "Analista de Datos",
+      company: "Digital Agency",
+      level: "Mid",
+      candidates: 1,
+      generated_questions: {},
+      description: "Descripción del puesto de Analista de Datos"
+    },
+  ];
+
   const listColumns = [
     { key: "title", label: "Título", primary: true },
     { key: "company", label: "Empresa" },
     { key: "level", label: "Nivel" },
+    // { key: "generated_questions", label: "Preguntas generadas" }, boolean
     {
       key: "candidates",
       label: "Candidatos",
@@ -47,13 +97,79 @@ export default function PositionsPage() {
     <>
       {/* Page Header - positioned under logo */}
       <PageHeader
-        title={`Puestos`}
+        title="Puestos"
         subtitle="Gestiona y visualiza todos las ofertas de trabajo"
       />
 
       <div className="p-6 md:p-8 max-w-7xl mx-auto">
+        <div className="mb-8 flex justify-end">
+          <ViewToggle currentView={view} onToggle={setView} />
+        </div>
+
         {/* Content */}
-        <div className="flex flex-wrap justify-center gap-6"></div>
+        {view === "cards" ? (
+          <div className="flex flex-wrap justify-center gap-6">
+            {positions.map((position) => (
+              <ItemCard
+                key={position.id}
+                title={position.title}
+                subtitle={`${position.company}`}
+                additionalInfo={[`Nivel: ${position.level}`, `Candidatos: ${position.candidates || 0}`]}
+                description={position.description}
+                detailsRoute={`/positions/${position.id}`}
+                badge={<MdOutlineBadge size={20} />}
+                onEdit={handleEdit}
+              />
+            ))}
+            <CreateCard
+              icon={<RiFunctionAddFill size={48} className="text-green-600" />}
+              label="Añadir Puesto"
+              description={`Crea un nuevo puesto ${
+                positions.length === 0 ? "para comenzar." : ""
+              }`}
+              onClick={handleCreate}
+            />
+          </div>
+        ) : (
+          <ItemList
+            items={positions}
+            columns={listColumns}
+            onView={handleView}
+            onEdit={handleEdit}
+            onCreateNew={handleCreate}
+            createIcon={<RiFunctionAddFill />}
+            createLabel="Añadir nuevo puesto"
+          />
+        )}
+
+        {/* Edit Modal */}
+        <FormModal
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          title="Editar Puesto"
+          variant="green"
+        >
+          <p>Edit modal</p>
+          {/* <EditPositionForm
+            positionId={editingPositionId}
+            onSuccess={() => setShowEditModal(false)}
+            onCancel={() => setShowEditModal(false)}
+          /> */}
+        </FormModal>
+
+        {/* Create Modal */}
+        <FormModal
+          isOpen={showCreateModal}
+          onClose={() => setShowCreateModal(false)}
+          title="Crear Nuevo Puesto"
+          variant="green"
+        >
+          <p>Create modal</p>
+          {/* <CreatePositionForm
+            onSuccess={() => setShowCreateModal(false)}
+            onCancel={() => setShowCreateModal(false)}
+          /> */}
+        </FormModal>
       </div>
     </>
   );

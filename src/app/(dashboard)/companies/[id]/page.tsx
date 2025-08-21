@@ -37,32 +37,26 @@ export default function CompanyDetailsPage() {
     {
       id: 1,
       title: "Senior React Developer",
-      department: "Engineering",
       level: "Senior",
-      type: "Full-time",
-      status: "Activo",
       description: "Buscamos un desarrollador React senior para liderar el desarrollo front-end...",
       candidates: 5,
+      generated_questions: {},
     },
     {
       id: 2,
       title: "DevOps Engineer",
-      department: "Infrastructure",
       level: "Mid",
-      type: "Full-time",
-      status: "Activo",
       description: "Responsable de la infraestructura cloud y pipelines de CI/CD...",
       candidates: 3,
+      generated_questions: {},
     },
     {
       id: 3,
       title: "UI/UX Designer",
-      department: "Design",
       level: "Junior",
-      type: "Full-time",
-      status: "Pausado",
       description: "Diseñador creativo para mejorar la experiencia de usuario...",
       candidates: 8,
+      generated_questions: {},
     },
   ];
 
@@ -95,14 +89,12 @@ export default function CompanyDetailsPage() {
               onClick={() => setShowCreatePositionModal(true)}
               className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white rounded-sm hover:bg-green-700 transition-colors cursor-pointer"
             >
-              {/* <Edit size={16} /> */}
               Añadir Puesto
             </button>
             <button
               onClick={() => setShowEditModal(true)}
               className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-beige text-green-900 rounded-sm hover:bg-green-200 transition-colors cursor-pointer"
             >
-              {/* <Edit size={16} /> */}
               Editar Empresa
             </button>
           </div>
@@ -215,16 +207,13 @@ export default function CompanyDetailsPage() {
                       key={position.id}
                       id={position.id.toString()}
                       title={position.title}
-                      subtitle={position.department}
+                      subtitle={`Candidatos: ${position.candidates || 0}`}
                       additionalInfo={[
-                        position.level,
-                        position.type,
-                        `${position.candidates} candidatos`,
+                        `Nivel: ${position.level}`,
                       ]}
                       description={position.description}
-                      detailsRoute={`/dashboard/positions/${position.id}`}
-                      badge="Posición"
-                      onEdit={(id) => console.log("Edit position", id)}
+                      detailsRoute={`/positions/${position.id}`}
+                      badge={<MdOutlineBadge size={16}/>}
                     />
                   ))}
                 </div>

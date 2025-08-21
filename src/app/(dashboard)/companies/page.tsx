@@ -20,11 +20,11 @@ export default function CompaniesPage() {
 
   // Mock data - replace with real data later
   const companies: any[] = [
-    { id: 1, name: "Tech Corp", employees: 50, description: "..." },
-    { id: 2, name: "Design Studio", employees: 25, description: "..." },
-    { id: 3, name: "Marketing Agency", employees: 10, description: "..." },
-    { id: 4, name: "Creative Agency", employees: 15, description: "..." },
-    { id: 5, name: "Digital Agency", employees: 20, description: "..." },
+    { id: 1, name: "Tech Corp", employees: 50, industry: "Technology", description: "..." },
+    { id: 2, name: "Design Studio", employees: 25, industry: "Design", description: "..." },
+    { id: 3, name: "Marketing Agency", employees: 10, industry: "Marketing", description: "..." },
+    { id: 4, name: "Creative Agency", employees: 15, industry: "Creative", description: "..." },
+    { id: 5, name: "Digital Agency", employees: 20, industry: "Digital", description: "..." },
     // Empty array = show create card
   ];
 
@@ -74,7 +74,8 @@ export default function CompaniesPage() {
               <ItemCard
                 key={company.id}
                 title={company.name}
-                subtitle={`${company.employees} empleados`}
+                subtitle={`${company.positions || 0} puestos abiertos`}
+                additionalInfo={[`Industria: ${company.industry}`, `Empleados: ${company.employees}`]}
                 description={company.description}
                 detailsRoute={`/companies/${company.id}`}
                 badge={<BiSolidBuildings size={20} />}

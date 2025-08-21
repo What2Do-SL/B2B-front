@@ -44,7 +44,8 @@ function ItemCard({
       window.matchMedia("(pointer: coarse)").matches);
 
   // Truncate description if too long
-  const truncateDescription = (text: string, maxLength: number = 120) => {
+  const truncateDescription = (text: string | undefined, maxLength: number = 120) => {
+    if (!text) return "";
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength).trim() + "...";
   };
@@ -157,7 +158,7 @@ function ItemCard({
 
         {/* Additional info (1-3 items) */}
         {additionalInfo.length > 0 && (
-          <div className="space-y-1">
+          <div className="space-y-2">
             {additionalInfo.slice(0, 3).map((info, index) => (
               <p key={index} className="text-green-300 text-xs">
                 {info}
