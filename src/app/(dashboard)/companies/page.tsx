@@ -62,9 +62,11 @@ export default function CompaniesPage() {
       />
 
       <div className="p-6 md:p-8 max-w-7xl mx-auto">
-        <div className="mb-8 flex justify-end">
-          <ViewToggle currentView={view} onToggle={setView} />
-        </div>
+        {companies.length > 0 && (
+          <div className="mb-8 flex justify-end">
+            <ViewToggle currentView={view} onToggle={setView} />
+          </div>
+        )}
 
         {/* Content */}
         {companies.length > 0 ? (
@@ -99,6 +101,7 @@ export default function CompaniesPage() {
             />
           </div>
         )}
+
         {/* Edit Modal */}
         <FormModal
           isOpen={showEditModal}
