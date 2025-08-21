@@ -1,8 +1,118 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import PageHeader from "@/components/layout/PageHeader";
+import ItemCard from "@/components/ui/ItemCard";
+import ItemList from "@/components/ui/ItemList";
+import ViewToggle from "@/components/ui/ViewToggle";
+import FormModal from "@/components/modals/FormModal";
+import { BiSolidBuildings } from "react-icons/bi";
+
 export default function CompaniesPage() {
+  const [view, setView] = useState<"cards" | "list">("cards");
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingCompanyId, setEditingCompanyId] = useState<string>("");
+  const router = useRouter();
+
+  // Mock data - replace with real data later
+  const companies = [
+    { id: 1, name: "Tech Corp", employees: 50, description: "..." },
+    { id: 2, name: "Design Studio", employees: 25, description: "..." },
+    { id: 3, name: "Marketing Agency", employees: 10, description: "..." },
+    { id: 4, name: "Creative Agency", employees: 15, description: "..." },
+    { id: 5, name: "Digital Agency", employees: 20, description: "..." },
+    // Empty array = show create card
+  ];
+
+  const listColumns = [
+    { key: "name", label: "Empresa", primary: true },
+    {
+      key: "employees",
+      label: "Empleados",
+      render: (value: number) => `${value} empleados`,
+    },
+    { key: "industry", label: "Industria" },
+  ];
+
+  const handleView = (id: string) => {
+    router.push(`/dashboard/companies/${id}`);
+  };
+
+  const handleEdit = (id: string) => {
+    // Open edit modal
+    console.log("Edit company", id);
+    setEditingCompanyId(id);
+    setShowEditModal(true);
+  };
+
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">Empresas</h1>
-      <p className="text-gray-600">Bienvenido a la sección de empresas!</p>
-    </div>
+    <>
+      {/* Page Header - positioned under logo */}
+      <PageHeader 
+        title="Empresas" 
+        subtitle="Gestiona y visualiza todas tus empresas" 
+      />
+
+      <div className="p-6 md:p-8 max-w-7xl mx-auto">
+        <div className="mb-8 flex justify-end">
+          <ViewToggle currentView={view} onToggle={setView} />
+        </div>
+
+        {/* Content */}
+        {companies.length > 0 ? (
+          view === "cards" ? (
+            <div className="flex flex-wrap justify-center gap-6">
+              {companies.map((company) => (
+                <ItemCard
+                  key={company.id}
+                  title={company.name}
+                  subtitle={`${company.employees} empleados`}
+                  description={company.description}
+                  detailsRoute={`/dashboard/companies/${company.id}`}
+                  badge={<BiSolidBuildings size={20}/>}
+                  onEdit={handleEdit}
+                />
+              ))}
+            </div>
+          ) : (
+            <ItemList
+              items={companies}
+              columns={listColumns}
+              onView={handleView}
+              onEdit={handleEdit}
+              emptyMessage="No hay empresas disponibles"
+              emptyDescription="Crea tu primera empresa para comenzar"
+            />
+          )
+        ) : (
+          <div className="flex justify-center items-center py-16">
+            <div className="text-center">
+              <div className="text-gray-500 text-lg mb-4">
+                No hay empresas disponibles
+              </div>
+              <p className="text-gray-400 text-sm">
+                Crea tu primera empresa para comenzar
+              </p>
+            </div>
+          </div>
+        )}
+        {/* Edit Modal */}
+        <FormModal
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          title="Editar Empresa"
+          variant="green"
+        >
+          <p>Edit modal</p>
+          {/* <EditCompanyForm 
+            companyId={editingCompanyId}
+            onSuccess={() => setShowEditModal(false)}
+            onCancel={() => setShowEditModal(false)}
+          /> */}
+        </FormModal>
+      </div>
+    </>
   );
 }
+// <CreateCard type="empresa" onClick={() => console.log("Create company")} />

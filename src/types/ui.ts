@@ -1,8 +1,8 @@
 export interface DockItem {
-  icon: string | React.ReactNode;  
-  label: string;                   
-  onClick: () => void;             
-  className?: string;              
+  icon: string | React.ReactNode;
+  label: string;
+  onClick: () => void;
+  className?: string;
 }
 
 export interface DockItemProps {
@@ -58,7 +58,7 @@ export interface BaseModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: "sm" | "md" | "lg" | "xl";
   showOverlay?: boolean;
 }
 
@@ -67,15 +67,15 @@ export interface FormModalProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
-  variant?: 'beige' | 'green';
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  variant?: "beige" | "green";
+  size?: "sm" | "md" | "lg" | "xl";
   showCloseButton?: boolean;
 }
 
 export interface AlertAction {
   label: string;
   onClick: () => void;
-  variant?: 'primary' | 'secondary';
+  variant?: "primary" | "secondary";
 }
 
 export interface AlertModalProps {
@@ -83,7 +83,45 @@ export interface AlertModalProps {
   onClose: () => void;
   title: string;
   message: string;
-  type?: 'success' | 'error';
+  type?: "success" | "error";
   actions?: AlertAction[];
   showCloseButton?: boolean;
+}
+
+export interface ItemCardProps {
+  id?: string;
+  title: string;
+  subtitle?: string;
+  additionalInfo?: string[];
+  description: string;
+  detailsRoute: string;
+  badge?: any;
+  gridSize?: number;
+  animationStepDuration?: number;
+  className?: string;
+  style?: React.CSSProperties;
+  aspectRatio?: string;
+  onEdit?: (id: string) => void;
+}
+
+export interface ListColumn {
+  key: string;
+  label: string;
+  primary?: boolean;
+  render?: (value: any, item: any) => React.ReactNode;
+}
+
+export interface ItemListProps {
+  items: any[];
+  columns: ListColumn[];
+  onView?: (id: string) => void;
+  onEdit?: (id: string) => void;
+  className?: string;
+  emptyMessage?: string;
+  emptyDescription?: string;
+}
+
+export interface PageHeaderProps {
+  title: string;
+  subtitle: string;
 }

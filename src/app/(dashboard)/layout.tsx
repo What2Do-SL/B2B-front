@@ -57,7 +57,7 @@ export default function DashboardLayout({
 
       {/* Header with logo */}
       {/* Top-left logo */}
-      <div className="absolute top-4 left-4 z-50">
+      <div className="absolute top-10 left-6 z-50">
         <Image
           src="/main-logo-dark.png"
           alt="What2do Logo"
@@ -68,8 +68,8 @@ export default function DashboardLayout({
       </div>
 
       {/* Main content */}
-      <main className="flex items-center justify-center min-h-screen relative z-10">
-        <div className="w-full text-center">
+      <main className="min-h-screen relative z-10" style={{ paddingTop: '5rem', paddingBottom: '8rem' }}>
+        <div className="w-full ">
           {children}
         </div>
       </main>
