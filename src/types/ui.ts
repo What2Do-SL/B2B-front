@@ -125,3 +125,12 @@ export interface PageHeaderProps {
   title: string;
   subtitle: string;
 }
+
+export interface CreateCardProps {
+  label: string;
+  description?: string;
+  onClick: () => void;
+  className?: string;
+  style?: React.CSSProperties;
+  aspectRatio?: string;
+}

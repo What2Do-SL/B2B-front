@@ -7,16 +7,18 @@ import ItemCard from "@/components/ui/ItemCard";
 import ItemList from "@/components/ui/ItemList";
 import ViewToggle from "@/components/ui/ViewToggle";
 import FormModal from "@/components/modals/FormModal";
+import CreateCard from "@/components/ui/CreateCard";
 import { BiSolidBuildings } from "react-icons/bi";
 
 export default function CompaniesPage() {
   const [view, setView] = useState<"cards" | "list">("cards");
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingCompanyId, setEditingCompanyId] = useState<string>("");
   const router = useRouter();
 
   // Mock data - replace with real data later
-  const companies = [
+  const companies: any[] = [
     { id: 1, name: "Tech Corp", employees: 50, description: "..." },
     { id: 2, name: "Design Studio", employees: 25, description: "..." },
     { id: 3, name: "Marketing Agency", employees: 10, description: "..." },
@@ -34,6 +36,10 @@ export default function CompaniesPage() {
     },
     { key: "industry", label: "Industria" },
   ];
+
+   const handleCreate = () => {
+    setShowCreateModal(true); // Opens the create modal
+  };
 
   const handleView = (id: string) => {
     router.push(`/companies/${id}`);
@@ -81,20 +87,15 @@ export default function CompaniesPage() {
               columns={listColumns}
               onView={handleView}
               onEdit={handleEdit}
-              emptyMessage="No hay empresas disponibles"
-              emptyDescription="Crea tu primera empresa para comenzar"
             />
           )
         ) : (
           <div className="flex justify-center items-center py-16">
-            <div className="text-center">
-              <div className="text-gray-500 text-lg mb-4">
-                No hay empresas disponibles
-              </div>
-              <p className="text-gray-400 text-sm">
-                Crea tu primera empresa para comenzar
-              </p>
-            </div>
+            <CreateCard
+              label="Añadir Empresa"
+              description="Crea una nueva empresa para comenzar."
+              onClick={handleCreate}
+            />
           </div>
         )}
         {/* Edit Modal */}
@@ -115,4 +116,3 @@ export default function CompaniesPage() {
     </>
   );
 }
-// <CreateCard type="empresa" onClick={() => console.log("Create company")} />
