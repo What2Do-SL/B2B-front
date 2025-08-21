@@ -144,3 +144,11 @@ export interface EmptyStateProps {
   description: string;
   icon?: React.ReactNode;
 }
+
+export interface GradientTextProps {
+  children: React.ReactNode;
+  className?: string;
+  colors?: string[];
+  animationSpeed?: number;
+  showBorder?: boolean;
+}

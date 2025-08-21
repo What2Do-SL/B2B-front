@@ -104,7 +104,7 @@ export default function PositionDetailsPage() {
           {/* Position Name Section */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-green-100 rounded-lg">
+              <div className="p-3 bg-green-100 rounded-sm">
                 <MdOutlineBadge size={32} className="text-green-600" />
               </div>
               <div>
@@ -137,7 +137,7 @@ export default function PositionDetailsPage() {
           {/* Main Details */}
           <div className="lg:col-span-2 space-y-6">
             {/* Description */}
-            <div className="bg-white p-6 rounded-lg border border-gray-200">
+            <div className="bg-white p-6 rounded-sm border border-gray-200">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">
                 Descripción del Puesto
               </h3>
@@ -149,7 +149,7 @@ export default function PositionDetailsPage() {
 
           {/* Sidebar - Quick Stats */}
           <div className="space-y-4">
-            <div className="bg-white p-4 rounded-lg border border-gray-200">
+            <div className="bg-white p-4 rounded-sm border border-gray-200">
               <div className="flex items-center gap-2 mb-2">
                 <BiSolidBuildings size={16} className="text-green-600" />
                 <span className="text-sm font-medium text-gray-600">
@@ -161,7 +161,7 @@ export default function PositionDetailsPage() {
               </p>
             </div>
 
-            <div className="bg-white p-4 rounded-lg border border-gray-200">
+            <div className="bg-white p-4 rounded-sm border border-gray-200">
               <div className="flex items-center gap-2 mb-2">
                 <BsFillQuestionSquareFill size={16} className="text-green-600" />
                 <span className="text-sm font-medium text-gray-600">
@@ -179,7 +179,7 @@ export default function PositionDetailsPage() {
               </div>
             </div>
 
-            <div className="bg-white p-4 rounded-lg border border-gray-200">
+            <div className="bg-white p-4 rounded-sm border border-gray-200">
               <div className="flex items-center gap-2 mb-2">
                 <IoPeople size={16} className="text-green-600" />
                 <span className="text-sm font-medium text-gray-600">
