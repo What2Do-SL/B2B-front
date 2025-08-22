@@ -8,8 +8,7 @@ import ItemList from "@/components/ui/ItemList";
 import ViewToggle from "@/components/ui/ViewToggle";
 import FormModal from "@/components/modals/FormModal";
 import CreateCard from "@/components/ui/CreateCard";
-import { MdDomainAdd } from "react-icons/md";
-import { BiSolidBuildings } from "react-icons/bi";
+import { getIcon } from "@/lib/icons";
 
 export default function CompaniesPage() {
   const [view, setView] = useState<"cards" | "list">("cards");
@@ -78,12 +77,12 @@ export default function CompaniesPage() {
                 additionalInfo={[`Industria: ${company.industry}`, `Empleados: ${company.employees}`]}
                 description={company.description}
                 detailsRoute={`/companies/${company.id}`}
-                badge={<BiSolidBuildings size={20} />}
+                badge={getIcon("company", { size: 20, className: "text-beige" })}
                 onEdit={handleEdit}
               />
             ))}
             <CreateCard
-              icon={<MdDomainAdd size={48} className="text-green-600" />}
+              icon={getIcon("add-company", { size: 48 })}
               label="Añadir Empresa"
               description={`Crea una nueva empresa ${
                 companies.length === 0 ? "para comenzar." : ""
@@ -98,7 +97,7 @@ export default function CompaniesPage() {
             onView={handleView}
             onEdit={handleEdit}
             onCreateNew={handleCreate}
-            createIcon={<MdDomainAdd />}
+            createIcon={getIcon("add-company")}
             createLabel="Añadir nueva empresa"
           />
         )}

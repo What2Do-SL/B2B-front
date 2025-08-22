@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
 import { ItemCardProps } from "@/types/ui";
+import { getIcon } from "@/lib/icons";
 
 function ItemCard({
   id,
@@ -44,7 +45,10 @@ function ItemCard({
       window.matchMedia("(pointer: coarse)").matches);
 
   // Truncate description if too long
-  const truncateDescription = (text: string | undefined, maxLength: number = 120) => {
+  const truncateDescription = (
+    text: string | undefined,
+    maxLength: number = 120
+  ) => {
     if (!text) return "";
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength).trim() + "...";
@@ -105,12 +109,12 @@ function ItemCard({
       },
     });
 
-   delayedCallRef.current = gsap.delayedCall(animationStepDuration, () => {
-  if (activeEl) {
-    activeEl.style.display = activate ? "block" : "none";
-    activeEl.style.pointerEvents = activate ? "auto" : "none"; 
-  }
-});
+    delayedCallRef.current = gsap.delayedCall(animationStepDuration, () => {
+      if (activeEl) {
+        activeEl.style.display = activate ? "block" : "none";
+        activeEl.style.pointerEvents = activate ? "auto" : "none";
+      }
+    });
 
     gsap.to(pixels, {
       display: "none",
@@ -146,11 +150,11 @@ function ItemCard({
     <div className="p-6 h-full flex flex-col justify-between">
       <div>
         {badge && (
-          <div className="inline-block px-3 py-1 bg-green-600 text-white text-xs font-medium rounded-sm mb-4">
+          <div className="inline-block px-3 py-1 bg-green-600 text-xs font-medium rounded-sm mb-4">
             {badge}
           </div>
         )}
-        <h3 className="text-xl font-semibold text-white mb-2 truncate">
+        <h3 className="text-xl font-semibold text-beige mb-2 truncate">
           {title}
         </h3>
 
@@ -186,19 +190,7 @@ function ItemCard({
           className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-sm transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer"
         >
           Ver detalles
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
+          {getIcon("more", { className: "text-white" })}
         </button>
 
         {onEdit && (
@@ -207,19 +199,7 @@ function ItemCard({
             className="w-full bg-beige hover:bg-green-100 text-green-900 font-medium py-2 px-4 rounded-sm transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer"
           >
             Editar
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-              />
-            </svg>
+            {getIcon("edit", { className: "text-green-900" })}
           </button>
         )}
       </div>

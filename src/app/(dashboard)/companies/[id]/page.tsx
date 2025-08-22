@@ -6,11 +6,8 @@ import BackButton from "@/components/ui/buttons/BackButton";
 import ItemCard from "@/components/ui/ItemCard";
 import FormModal from "@/components/modals/FormModal";
 import EmptyState from "@/components/ui/EmptyState";
-import { BiSolidBuildings } from "react-icons/bi";
-import { MdOutlineBadge } from "react-icons/md";
-import { FaBuildingUser } from "react-icons/fa6";
-import { BsBuildingFillGear } from "react-icons/bs";
-import { TiArrowSortedDown } from "react-icons/ti";
+import DetailsPageHeader from "@/components/layout/DetailsPageHeader";
+import { getIcon } from "@/lib/icons";
 
 export default function CompanyDetailsPage() {
   const params = useParams();
@@ -70,19 +67,11 @@ export default function CompanyDetailsPage() {
         {/* Company Name and Icon */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           {/* Company Name Section */}
-          <div className="lg:col-span-2">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-green-100 rounded-sm">
-                <BiSolidBuildings size={32} className="text-green-600" />
-              </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
-                  {company.name}
-                </h1>
-              </div>
-            </div>
-          </div>
-
+          <DetailsPageHeader
+            icon={getIcon("company", { size: 32})}
+            title={company.name}
+            
+          />
           {/* Edit Button */}
           <div className="flex items-center gap-2">
             <button
@@ -119,7 +108,7 @@ export default function CompanyDetailsPage() {
           <div className="space-y-4">
             <div className="bg-white p-4 rounded-sm border border-gray-200">
               <div className="flex items-center gap-2 mb-2">
-                <FaBuildingUser size={16} className="text-green-600" />
+                {getIcon("employees")}
                 <span className="text-sm font-medium text-gray-600">
                   Empleados
                 </span>
@@ -131,7 +120,7 @@ export default function CompanyDetailsPage() {
 
             <div className="bg-white p-4 rounded-sm border border-gray-200">
               <div className="flex items-center gap-2 mb-2">
-                <BsBuildingFillGear size={16} className="text-green-600" />
+                {getIcon("industry")}
                 <span className="text-sm font-medium text-gray-600">
                   Industria
                 </span>
@@ -143,7 +132,7 @@ export default function CompanyDetailsPage() {
 
             <div className="bg-white p-4 rounded-sm border border-gray-200">
               <div className="flex items-center gap-2 mb-2">
-                <MdOutlineBadge size={16} className="text-green-600" />
+                {getIcon("position")}
                 <span className="text-sm font-medium text-gray-600">
                   Puestos abiertos
                 </span>
@@ -171,7 +160,7 @@ export default function CompanyDetailsPage() {
             <EmptyState
               title="No hay puestos abiertos"
               description="Añade un nuevo puesto para esta empresa"
-              icon={<MdOutlineBadge size={48} className="mx-auto text-gray-400" />}
+              icon={getIcon("position", { size: 48, className: "mx-auto text-gray-400" })}
             />
           </div>
         ) : (
@@ -187,7 +176,7 @@ export default function CompanyDetailsPage() {
                     Puestos ({positions.length})
                   </h2>
                   <div className={`transform transition-transform cursor-pointer ${showPositions ? 'rotate-180' : ''}`}>
-                    <TiArrowSortedDown size={24} className="text-green-800" />
+                    {getIcon("toggle", { size: 24, className: "text-green-800" })}
                   </div>
                 </button>
                 {showPositions && (
@@ -213,7 +202,7 @@ export default function CompanyDetailsPage() {
                       ]}
                       description={position.description}
                       detailsRoute={`/positions/${position.id}`}
-                      badge={<MdOutlineBadge size={16}/>}
+                      badge={getIcon("position", { size: 18, className: "text-beige" })}
                     />
                   ))}
                 </div>

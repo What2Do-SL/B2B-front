@@ -5,19 +5,14 @@ import { useParams, useRouter } from "next/navigation";
 import BackButton from "@/components/ui/buttons/BackButton";
 import FormModal from "@/components/modals/FormModal";
 import EmptyState from "@/components/ui/EmptyState";
-import GradientText from "@/components/ui/GradientText";
-import { MdEmail } from "react-icons/md";
-import { FaUserLarge } from "react-icons/fa6";
-import { FaMagnifyingGlassChart } from "react-icons/fa6";
-import { IoTimer } from "react-icons/io5";
-import { TbDeviceDesktopAnalytics } from "react-icons/tb";
-import { PiSealCheckDuotone } from "react-icons/pi";
-import { AiFillCloseSquare } from "react-icons/ai";
-import { TiArrowSortedDown } from "react-icons/ti";
-import { PiPercentFill } from "react-icons/pi";
-import { SiLevelsdotfyi } from "react-icons/si";
-
+import ScoreCard from "@/features/candidates/components/ScoreCard";
+import DetailsScoreCard from "@/features/candidates/components/DetailsScoreCard";
+import KeyStrengths from "@/features/candidates/components/KeyStrengths";
+import StatCard from "@/features/candidates/components/StatCard";
+import MatchingStatusCard from "@/features/candidates/components/MatchingStatusCard";
+import DetailsPageHeader from "@/components/layout/DetailsPageHeader";
 import { formatDate } from "@/lib/utils";
+import { getIcon } from "@/lib/icons";
 
 export default function CandidateDetailsPage() {
   const params = useParams();
@@ -97,7 +92,7 @@ export default function CandidateDetailsPage() {
           "El candidato posee habilidades técnicas relevantes como React.js, Agile/SCRUM, DevSecOps y desarrollo full-stack, además de certificaciones en ciberseguridad y metodologías ágiles, que cubren la mayoría de los requerimientos técnicos del puesto. Aunque su experiencia técnica es sólida, su rol reciente ha sido más de liderazgo y gestión técnica, lo que sugiere un ligero ajuste para roles muy hands-on de desarrollo puro, pero con alta capacidad para aportar valor estratégico y técnico.",
         soft_skills_match_rationale:
           "El candidato ha demostrado habilidades blandas clave como liderazgo, trabajo en equipo y comunicación efectiva, que son esenciales para el rol. Su experiencia en la gestión de equipos y proyectos en entornos ágiles resalta su capacidad para colaborar y adaptarse a diferentes dinámicas de trabajo.",
-          experience_match_rationale:
+        experience_match_rationale:
           "Con más de 3 años de experiencia en desarrollo full-stack y liderazgo en entornos SaaS y startups, el candidato cumple con el requisito mínimo y aporta experiencia adicional en gestión de proyectos y transformación digital. Su background en coordinación de equipos técnicos y optimización de procesos es un plus para el rol, mostrando potencial para crecimiento hacia posiciones de mayor responsabilidad técnica y estratégica.",
         confidence_rationale:
           "El análisis psicológico y el CV muestran alta consistencia en habilidades blandas, motivaciones y experiencia técnica. Las respuestas son profundas y coherentes, con un alto score de consistencia y confianza en el análisis, lo que permite asignar un nivel de confianza alto en la evaluación.",
@@ -117,22 +112,11 @@ export default function CandidateDetailsPage() {
         {/* Position Name and Icon */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           {/* Position Name Section */}
-          <div className="lg:col-span-2">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-green-100 rounded-sm">
-                <FaUserLarge size={32} className="text-green-600" />
-              </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
-                  {candidate.name}
-                </h1>
-                <p className="text-lg text-green-800">
-                  Candidato para {candidate.candidate_for.title} -{" "}
-                  {candidate.candidate_for.company}
-                </p>
-              </div>
-            </div>
-          </div>
+          <DetailsPageHeader
+            icon={getIcon("candidate", { size: 32 })}
+            title={candidate.name}
+            subtitle={`Candidato para ${candidate.candidate_for.title} - ${candidate.candidate_for.company}`}
+          />
 
           {/* Edit Button */}
           <div className="flex items-center gap-2">
@@ -160,121 +144,55 @@ export default function CandidateDetailsPage() {
               <EmptyState
                 title="El candidato aún no ha completado el cuestionario"
                 description="Asegúrate de que el candidato haya recibido el correo."
-                icon={
-                  <TbDeviceDesktopAnalytics
-                    size={48}
-                    className="mx-auto text-gray-400"
-                  />
-                }
+                icon={getIcon("analytics", {
+                  size: 48,
+                  className: "mx-auto text-gray-400",
+                })}
               />
             ) : (
               <div className="space-y-4">
                 <div className="flex gap-2">
-                  <div className="bg-white p-4 rounded-sm border border-gray-200 flex justify-between w-full">
-                    <div className="flex items-center gap-2 mb-2">
-                      <PiPercentFill size={24} className="text-green-600" />
-                      <span className="text-2xl font-bold text-gray-800">
-                        Puntuación Global:
-                      </span>
-                    </div>
-                    <div className="text-2xl font-bold">
-                      <GradientText>
-                        {matching_breakdown.overall_score.$numberDouble}%
-                      </GradientText>
-                    </div>
-                  </div>
-                  <div className="bg-white p-4 rounded-sm border border-gray-200 flex justify-between w-full">
-                    <div className="flex items-center gap-2 mb-2">
-                      <SiLevelsdotfyi size={24} className="text-green-600" />
-                      <span className="text-2xl font-bold text-gray-800">
-                        Confianza:
-                      </span>
-                    </div>
-                    <div className="text-2xl font-bold">
-                      <GradientText>
-                        {matching_breakdown.confidence_level === "high"
-                          ? "Alta"
-                          : matching_breakdown.confidence_level === "medium"
-                          ? "Media"
-                          : "Baja"}
-                      </GradientText>
-                    </div>
-                  </div>
+                  <ScoreCard
+                    icon={getIcon("percents", { size: 24 })}
+                    label="Encaje de Puesto"
+                    score={matching_breakdown.position_fit_score}
+                    showGradient={true}
+                  />
+                  <ScoreCard
+                    icon={getIcon("confidence", { size: 24 })}
+                    label="Confianza"
+                    score={matching_breakdown.confidence_level}
+                    showGradient={true}
+                    isConfidenceLevel={true}
+                  />
                 </div>
 
                 {/* Description */}
-                <div className="bg-white p-6 rounded-sm border border-gray-200">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                    Fortalezas Clave
-                  </h3>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {matching_breakdown.key_strengths.map((strength, index) => (
-                      <span
-                        key={index}
-                        className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-sm"
-                      >
-                        {strength}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                <KeyStrengths strengths={matching_breakdown.key_strengths} />
               </div>
             )}
           </div>
 
           {/* Sidebar - Quick Stats */}
           <div className="space-y-4">
-            <div className="bg-white p-4 rounded-sm border border-gray-200">
-              <div className="flex items-center gap-2 mb-2">
-                <MdEmail size={16} className="text-green-600" />
-                <span className="text-sm font-medium text-gray-600">Email</span>
-              </div>
-              <p className="text-2xl font-bold text-gray-800">
-                {candidate.email}
-              </p>
-            </div>
-
-            <div className="bg-white p-4 rounded-sm border border-gray-200">
-              <div className="flex items-center gap-2 mb-2">
-                <FaMagnifyingGlassChart size={16} className="text-green-600" />
-                <span className="text-sm font-medium text-gray-600">
-                  Estado
-                </span>
-              </div>
-              <p className="text-2xl font-bold text-gray-800">
-                {candidate.status}
-              </p>
-            </div>
-            {matchingStatus === "completed" ? (
-              <div className="bg-white p-4 rounded-sm border border-gray-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <TbDeviceDesktopAnalytics
-                    size={16}
-                    className="text-green-600"
-                  />
-                  <span className="text-sm font-medium text-gray-600">
-                    Matching Status
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 mb-2">
-                  <PiSealCheckDuotone size={24} className="text-green-400" />
-                  <p className="text-2xl font-bold text-gray-800">
-                    Análisis disponible
-                  </p>
-                </div>
-              </div>
+            <StatCard
+              icon={getIcon("email")}
+              label="Email"
+              value={candidate.email}
+            />
+            <StatCard
+              icon={getIcon("status")}
+              label="Estado"
+              value={candidate.status}
+            />
+            {matchingStatus === "completed" || matchingStatus === "empty" ? (
+              <MatchingStatusCard matchingStatus={matchingStatus} />
             ) : (
-              <div className="bg-white p-4 rounded-sm border border-gray-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <IoTimer size={16} className="text-green-600" />
-                  <span className="text-sm font-medium text-gray-600">
-                    Enlace expira
-                  </span>
-                </div>
-                <p className="text-2xl font-bold text-gray-800">
-                  {formatDate(candidate.link_expires_at)}
-                </p>
-              </div>
+              <StatCard
+                icon={getIcon("expiration")}
+                label="Enlace expira"
+                value={formatDate(candidate.link_expires_at)}
+              />
             )}
           </div>
         </div>
@@ -299,12 +217,15 @@ export default function CandidateDetailsPage() {
                       showAnalysisDetails ? "rotate-180" : ""
                     }`}
                   >
-                    <TiArrowSortedDown size={24} className="text-green-800" />
+                    {getIcon("toggle", {
+                      size: 24,
+                      className: "text-green-800",
+                    })}
                   </div>
                 </button>
                 {showAnalysisDetails && (
                   <p className="text-green-900 mt-2">
-                    Detalles del análisis realizado para {" "}
+                    Detalles del análisis realizado para{" "}
                     <span className="font-bold">
                       {matching_breakdown.position.title} -{" "}
                       {matching_breakdown.position.company}
@@ -317,163 +238,56 @@ export default function CandidateDetailsPage() {
             {/* Analysis Details Dropdown Content */}
             {showAnalysisDetails && (
               <div className="space-y-4">
-                <div className="flex gap-1">
-                  <div className="bg-white p-4 rounded-sm border border-gray-200 flex flex-col">
-                    <div className="flex flex-col items-center gap-2 mb-2">
-                      <PiPercentFill size={24} className="text-green-600" />
-                      <span className="text-xl font-bold text-gray-800">
-                        Encaje de Puesto:
-                      </span>
-                    </div>
-                    <div className="text-3xl font-bold">
-                      <GradientText>
-                        {matching_breakdown.position_fit_score.$numberDouble}%
-                      </GradientText>
-                    </div>
-                  </div>
-                  <div className="bg-white p-6 rounded-sm border border-gray-200">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                      Razonamiento
-                    </h3>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {matching_breakdown.matching_analysis.detailed_analysis.position_fit_rationale
-                        .split(". ")
-                        .map((sentence, index) => (
-                          <p key={index} className="text-gray-700">
-                            {sentence.trim()}.
-                          </p>
-                        ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex gap-1">
-                  <div className="bg-white p-4 rounded-sm border border-gray-200 flex flex-col">
-                    <div className="flex flex-col items-center gap-2 mb-2">
-                      <PiPercentFill size={24} className="text-green-600" />
-                      <span className="text-xl font-bold text-gray-800">
-                        Encaje de Cultura:
-                      </span>
-                    </div>
-                    <div className="text-3xl font-bold">
-                      <GradientText>
-                        {matching_breakdown.culture_fit_score.$numberDouble}%
-                      </GradientText>
-                    </div>
-                  </div>
-                  <div className="bg-white p-6 rounded-sm border border-gray-200">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                      Razonamiento
-                    </h3>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {matching_breakdown.matching_analysis.detailed_analysis.culture_fit_rationale
-                        .split(". ")
-                        .map((sentence, index) => (
-                          <p key={index} className="text-gray-700">
-                            {sentence.trim()}.
-                          </p>
-                        ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex gap-1">
-                  <div className="bg-white p-4 rounded-sm border border-gray-200 flex flex-col">
-                    <div className="flex flex-col items-center gap-2 mb-2">
-                      <PiPercentFill size={24} className="text-green-600" />
-                      <span className="text-xl font-bold text-gray-800">
-                        Encaje de Habilidades Blandas:
-                      </span>
-                    </div>
-                    <div className="text-3xl font-bold">
-                      <GradientText>
-                        {
-                          matching_breakdown.soft_skills_match_score
-                            .$numberDouble
-                        }
-                        %
-                      </GradientText>
-                    </div>
-                  </div>
-                  <div className="bg-white p-6 rounded-sm border border-gray-200">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                      Razonamiento
-                    </h3>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {matching_breakdown.matching_analysis.detailed_analysis.soft_skills_match_rationale
-                        .split(". ")
-                        .map((sentence, index) => (
-                          <p key={index} className="text-gray-700">
-                            {sentence.trim()}.
-                          </p>
-                        ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex gap-1">
-                  <div className="bg-white p-4 rounded-sm border border-gray-200 flex flex-col">
-                    <div className="flex flex-col items-center gap-2 mb-2">
-                      <PiPercentFill size={24} className="text-green-600" />
-                      <span className="text-xl font-bold text-gray-800">
-                        Encaje de Habilidades Técnicas:
-                      </span>
-                    </div>
-                    <div className="text-3xl font-bold">
-                      <GradientText>
-                        {
-                          matching_breakdown.hard_skills_match_score
-                            .$numberDouble
-                        }
-                        %
-                      </GradientText>
-                    </div>
-                  </div>
-                  <div className="bg-white p-6 rounded-sm border border-gray-200">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                      Razonamiento
-                    </h3>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {matching_breakdown.matching_analysis.detailed_analysis.hard_skills_match_rationale
-                        .split(". ")
-                        .map((sentence, index) => (
-                          <p key={index} className="text-gray-700">
-                            {sentence.trim()}.
-                          </p>
-                        ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex gap-1">
-                  <div className="bg-white p-4 rounded-sm border border-gray-200 flex flex-col">
-                    <div className="flex flex-col items-center gap-2 mb-2">
-                      <PiPercentFill size={24} className="text-green-600" />
-                      <span className="text-xl font-bold text-gray-800">
-                        Encaje de Experiencia:
-                      </span>
-                    </div>
-                    <div className="text-3xl font-bold">
-                      <GradientText>
-                        {
-                          matching_breakdown.experience_match_score
-                            .$numberDouble
-                        }
-                        %
-                      </GradientText>
-                    </div>
-                  </div>
-                  <div className="bg-white p-6 rounded-sm border border-gray-200">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                      Razonamiento
-                    </h3>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {matching_breakdown.matching_analysis.detailed_analysis.experience_match_rationale
-                        .split(". ")
-                        .map((sentence, index) => (
-                          <p key={index} className="text-gray-700">
-                            {sentence.trim()}.
-                          </p>
-                        ))}
-                    </div>
-                  </div>
-                </div>
+                <DetailsScoreCard
+                  icon={getIcon("percents", { size: 24 })}
+                  label="Encaje de Puesto"
+                  score={matching_breakdown.position_fit_score}
+                  reasoning={
+                    matching_breakdown.matching_analysis.detailed_analysis
+                      .position_fit_rationale
+                  }
+                  showGradient
+                />
+                <DetailsScoreCard
+                  icon={getIcon("percents", { size: 24 })}
+                  label="Encaje de Cultura"
+                  score={matching_breakdown.culture_fit_score}
+                  reasoning={
+                    matching_breakdown.matching_analysis.detailed_analysis
+                      .culture_fit_rationale
+                  }
+                  showGradient
+                />
+                <DetailsScoreCard
+                  icon={getIcon("percents", { size: 24 })}
+                  label="Encaje de Habilidades Blandas"
+                  score={matching_breakdown.soft_skills_match_score}
+                  reasoning={
+                    matching_breakdown.matching_analysis.detailed_analysis
+                      .soft_skills_match_rationale
+                  }
+                  showGradient
+                />
+                <DetailsScoreCard
+                  icon={getIcon("percents", { size: 24 })}
+                  label="Encaje de Habilidades Técnicas"
+                  score={matching_breakdown.hard_skills_match_score}
+                  reasoning={
+                    matching_breakdown.matching_analysis.detailed_analysis
+                      .hard_skills_match_rationale
+                  }
+                  showGradient
+                />
+                <DetailsScoreCard
+                  icon={getIcon("percents", { size: 24 })}
+                  label="Encaje de Experiencia"
+                  score={matching_breakdown.experience_match_score}
+                  reasoning={
+                    matching_breakdown.matching_analysis.detailed_analysis
+                      .experience_match_rationale
+                  }
+                  showGradient
+                />
               </div>
             )}
           </div>

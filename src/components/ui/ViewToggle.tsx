@@ -1,5 +1,6 @@
 import { IoGridSharp } from "react-icons/io5";
 import { FaList } from "react-icons/fa6";
+import { getIcon } from "@/lib/icons";
 
 interface ViewToggleProps {
   currentView: "cards" | "list";
@@ -27,7 +28,12 @@ export default function ViewToggle({
           }
         `}
       >
-        <IoGridSharp size={16} />
+        {getIcon("grid", {
+          className:
+            currentView === "cards"
+              ? "text-green-900"
+              : "text-green-600 hover:text-green-900",
+        })}
       </button>
       <button
         onClick={() => onToggle("list")}
@@ -40,7 +46,12 @@ export default function ViewToggle({
           }
         `}
       >
-        <FaList size={16} />
+        {getIcon("list", {
+          className:
+            currentView === "list"
+              ? "text-green-900"
+              : "text-green-600 hover:text-green-900",
+        })}
       </button>
     </div>
   );

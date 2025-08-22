@@ -8,8 +8,7 @@ import ItemList from "@/components/ui/ItemList";
 import ViewToggle from "@/components/ui/ViewToggle";
 import FormModal from "@/components/modals/FormModal";
 import CreateCard from "@/components/ui/CreateCard";
-import { MdOutlineBadge } from "react-icons/md";
-import { RiFunctionAddFill } from "react-icons/ri";
+import { getIcon } from "@/lib/icons";
 
 export default function PositionsPage() {
   const [view, setView] = useState<"cards" | "list">("cards");
@@ -117,12 +116,12 @@ export default function PositionsPage() {
                 additionalInfo={[`Nivel: ${position.level}`, `Candidatos: ${position.candidates || 0}`]}
                 description={position.description}
                 detailsRoute={`/positions/${position.id}`}
-                badge={<MdOutlineBadge size={20} />}
+                badge={getIcon("position", { size: 20, className: "text-beige" })}
                 onEdit={handleEdit}
               />
             ))}
             <CreateCard
-              icon={<RiFunctionAddFill size={48} className="text-green-600" />}
+              icon={getIcon("add-position", { size: 48 })}
               label="Añadir Puesto"
               description={`Crea un nuevo puesto ${
                 positions.length === 0 ? "para comenzar." : ""
@@ -137,7 +136,7 @@ export default function PositionsPage() {
             onView={handleView}
             onEdit={handleEdit}
             onCreateNew={handleCreate}
-            createIcon={<RiFunctionAddFill />}
+            createIcon={getIcon("add-position")}
             createLabel="Añadir nuevo puesto"
           />
         )}

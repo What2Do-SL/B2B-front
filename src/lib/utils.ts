@@ -27,3 +27,42 @@ export const formatDate = (date: any) => {
     return "Fecha inválida";
   }
 };
+
+/**
+ * Converts MongoDB $numberDouble format to string
+ */
+export function formatScore(
+  score: { $numberDouble: string } | string | number
+): string {
+  if (typeof score === "string") return score;
+  if (typeof score === "number") return score.toString();
+  if (score && typeof score === "object" && "$numberDouble" in score) {
+    return score.$numberDouble;
+  }
+  return "0";
+}
+
+/**
+ * Translates confidence levels to Spanish
+ */
+export function formatConfidenceLevel(level: string): string {
+  const translations: Record<string, string> = {
+    high: "Alta",
+    medium: "Media",
+    low: "Baja",
+  };
+
+  return translations[level.toLowerCase()] || level;
+}
+
+/**
+ * Splits text by periods and returns array of sentences
+ * Each sentence is trimmed and has period added back
+ */
+export function splitBySentences(text: string): string[] {
+  return text
+    .split('. ')
+    .map(sentence => sentence.trim())
+    .filter(sentence => sentence.length > 0)
+    .map(sentence => sentence.endsWith('.') ? sentence : `${sentence}.`);
+}

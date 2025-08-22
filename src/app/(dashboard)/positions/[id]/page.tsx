@@ -6,16 +6,8 @@ import BackButton from "@/components/ui/buttons/BackButton";
 import ItemCard from "@/components/ui/ItemCard";
 import FormModal from "@/components/modals/FormModal";
 import EmptyState from "@/components/ui/EmptyState";
-import { BiSolidBuildings } from "react-icons/bi";
-import { MdOutlineBadge } from "react-icons/md";
-import { TiArrowSortedDown } from "react-icons/ti";
-import { IoPeople } from "react-icons/io5";
-import { FaUserLarge } from "react-icons/fa6";
-import { BsFillQuestionSquareFill } from "react-icons/bs";
-import { GrDocumentTime } from "react-icons/gr";
-import { PiSealCheckDuotone } from "react-icons/pi";
-import { AiFillCloseSquare } from "react-icons/ai";
-
+import DetailsPageHeader from "@/components/layout/DetailsPageHeader";
+import { getIcon } from "@/lib/icons";
 
 export default function PositionDetailsPage() {
   const params = useParams();
@@ -31,29 +23,34 @@ export default function PositionDetailsPage() {
   const getQuestionsStatus = (questions: any) => {
     if (!questions) {
       return {
-        icon: GrDocumentTime,
+        icon: getIcon("creation-pending", { className: "text-gray-500" }),
         status: "Pendiente",
-        color: "text-gray-500"
       };
     }
-    
+
     // Check if questions object has sections with actual questions
-    const hasSections = questions.sections && Array.isArray(questions.sections) && questions.sections.length > 0;
-    const hasQuestions = hasSections && questions.sections.some((section: any) => 
-      section.questions && Array.isArray(section.questions) && section.questions.length > 0
-    );
-    
+    const hasSections =
+      questions.sections &&
+      Array.isArray(questions.sections) &&
+      questions.sections.length > 0;
+    const hasQuestions =
+      hasSections &&
+      questions.sections.some(
+        (section: any) =>
+          section.questions &&
+          Array.isArray(section.questions) &&
+          section.questions.length > 0
+      );
+
     if (hasQuestions) {
       return {
-        icon: PiSealCheckDuotone,
+        icon: getIcon("analysis-success", { className: "text-green-600" }),
         status: "Generadas",
-        color: "text-green-600"
       };
     } else {
       return {
-        icon: AiFillCloseSquare,
+        icon: getIcon("analysis-fail", { className: "text-red-500" }),
         status: "Sin contenido",
-        color: "text-red-500"
       };
     }
   };
@@ -89,7 +86,7 @@ export default function PositionDetailsPage() {
       email: "pedro.lopez@example.com",
       status: "Enlace enviado",
       link_expires_at: new Date(Date.now() + 1000 * 60 * 60 * 24),
-      key_highlights: ["Candidato destacado", "Experiencia en React"]
+      key_highlights: ["Candidato destacado", "Experiencia en React"],
     },
   ];
 
@@ -103,18 +100,10 @@ export default function PositionDetailsPage() {
         {/* Position Name and Icon */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           {/* Position Name Section */}
-          <div className="lg:col-span-2">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-green-100 rounded-sm">
-                <MdOutlineBadge size={32} className="text-green-600" />
-              </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
-                  {position.title}
-                </h1>
-              </div>
-            </div>
-          </div>
+          <DetailsPageHeader
+            icon={getIcon("position", { size: 32 })}
+            title={position.title}
+          />
 
           {/* Edit Button */}
           <div className="flex items-center gap-2">
@@ -152,7 +141,7 @@ export default function PositionDetailsPage() {
           <div className="space-y-4">
             <div className="bg-white p-4 rounded-sm border border-gray-200">
               <div className="flex items-center gap-2 mb-2">
-                <BiSolidBuildings size={16} className="text-green-600" />
+                {getIcon("company")}
                 <span className="text-sm font-medium text-gray-600">
                   Empresa
                 </span>
@@ -164,25 +153,29 @@ export default function PositionDetailsPage() {
 
             <div className="bg-white p-4 rounded-sm border border-gray-200">
               <div className="flex items-center gap-2 mb-2">
-                <BsFillQuestionSquareFill size={16} className="text-green-600" />
+                {getIcon("question")}
                 <span className="text-sm font-medium text-gray-600">
                   Preguntas generadas
                 </span>
               </div>
-              <div className="flex items-center gap-2">
-                {(() => {
-                  const { icon: StatusIcon, color } = getQuestionsStatus(position.generated_questions);
-                  return <StatusIcon size={20} className={color} />;
-                })()}
-                <p className="text-lg font-bold text-gray-800">
-                  {getQuestionsStatus(position.generated_questions).status}
-                </p>
-              </div>
+              {(() => {
+                const questionStatus = getQuestionsStatus(
+                  position.generated_questions
+                );
+                return (
+                  <div className="flex items-center gap-2">
+                    {questionStatus.icon}
+                    <p className="text-lg font-bold text-gray-800">
+                      {questionStatus.status}
+                    </p>
+                  </div>
+                );
+              })()}
             </div>
 
             <div className="bg-white p-4 rounded-sm border border-gray-200">
               <div className="flex items-center gap-2 mb-2">
-                <IoPeople size={16} className="text-green-600" />
+                {getIcon("candidates")}
                 <span className="text-sm font-medium text-gray-600">
                   Candidatos inscritos
                 </span>
@@ -210,9 +203,10 @@ export default function PositionDetailsPage() {
             <EmptyState
               title="No hay candidatos inscritos"
               description="Añade un nuevo candidato para esta posición"
-              icon={
-                <MdOutlineBadge size={48} className="mx-auto text-gray-400" />
-              }
+              icon={getIcon("add-candidate", {
+                size: 48,
+                className: "text-gray-400 mx-auto",
+              })}
             />
           </div>
         ) : (
@@ -232,7 +226,7 @@ export default function PositionDetailsPage() {
                       showCandidates ? "rotate-180" : ""
                     }`}
                   >
-                    <TiArrowSortedDown size={24} className="text-green-800" />
+                    {getIcon("toggle", { size: 24, className: "text-green-800" })}
                   </div>
                 </button>
                 {showCandidates && (
@@ -253,10 +247,12 @@ export default function PositionDetailsPage() {
                       id={candidate.id.toString()}
                       title={candidate.name}
                       subtitle={`Estado: ${candidate.status}`}
-                      additionalInfo={[`Expiración de enlace: ${candidate.link_expires_at}`]}
+                      additionalInfo={[
+                        `Expiración de enlace: ${candidate.link_expires_at}`,
+                      ]}
                       description={candidate.description} //put highlights here
                       detailsRoute={`/candidates/${candidate.id}`}
-                      badge={<FaUserLarge size={16} />}
+                      badge={getIcon("candidate", {className: "text-beige"})}
                     />
                   ))}
                 </div>
