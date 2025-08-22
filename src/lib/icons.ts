@@ -25,6 +25,8 @@ import { IoLogOutSharp } from "react-icons/io5";
 import { IoGridSharp } from "react-icons/io5";
 import { FaList } from "react-icons/fa6";
 import { MdManageAccounts } from "react-icons/md";
+import { FaHouseUser } from "react-icons/fa";
+
 
 type IconType =
   | "email"
@@ -53,7 +55,8 @@ type IconType =
   | "list"
   | "edit"
   | "more"
-  | "position-level";
+  | "position-level"
+  | "account";
 
 interface IconOptions {
   size?: number;
@@ -153,6 +156,8 @@ export const getIcon = (
       return React.createElement(ArrowRightIcon, { size, className });
     case "position-level":
       return React.createElement(MdManageAccounts, { size, className });
+    case "account":
+      return React.createElement(FaHouseUser, { size, className });
     default:
       return null;
   }

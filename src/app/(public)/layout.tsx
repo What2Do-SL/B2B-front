@@ -18,7 +18,7 @@ export default function PublicLayout({
         { label: "Cómo funciona", ariaLabel: "Cómo funciona", href: "/" },
         { label: "Precios", ariaLabel: "Precios", href: "/" },
         { label: "Soy particular", ariaLabel: "Soy particular", href: "/" },
-        { label: "Sobre nosotros", ariaLabel: "Sobre nosotros", href: "/" },
+        { label: "Legal", ariaLabel: "Legal", href: "/" },
       ],
     },
     {

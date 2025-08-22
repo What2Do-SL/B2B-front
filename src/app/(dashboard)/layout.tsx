@@ -14,6 +14,12 @@ export default function DashboardLayout({
   const router = useRouter();
   const dockItems: DockItem[] = [
     {
+      icon: getIcon("account", { size: 24, className: "text-green-200" }),
+      label: "Mi cuenta",
+      onClick: () => router.push("/account"),
+      className: "cursor-pointer",
+    },
+    {
       icon: getIcon("company", { size: 24, className: "text-green-200" }),
       label: "Empresas",
       onClick: () => router.push("/companies"),
@@ -31,6 +37,7 @@ export default function DashboardLayout({
       onClick: () => router.push("/candidates"),
       className: "cursor-pointer",
     },
+
     {
       icon: getIcon("info", { size: 24, className: "text-green-200" }),
       label: "Contacto",
@@ -46,11 +53,10 @@ export default function DashboardLayout({
   ];
 
   return (
-    <div 
+    <div
       className="min-h-screen bg-cover bg-center bg-no-repeat relative"
       style={{ backgroundImage: "url('/bg.png')" }}
     >
-
       {/* Header with logo */}
       {/* Top-left logo */}
       <div className="absolute top-10 left-6 z-50">
@@ -64,10 +70,11 @@ export default function DashboardLayout({
       </div>
 
       {/* Main content */}
-      <main className="min-h-screen relative z-10" style={{ paddingTop: '5rem', paddingBottom: '8rem' }}>
-        <div className="w-full ">
-          {children}
-        </div>
+      <main
+        className="min-h-screen relative z-10"
+        style={{ paddingTop: "5rem", paddingBottom: "8rem" }}
+      >
+        <div className="w-full ">{children}</div>
       </main>
 
       {/* Bottom navigation dock */}

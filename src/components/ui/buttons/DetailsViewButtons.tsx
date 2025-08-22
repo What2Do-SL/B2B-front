@@ -5,6 +5,8 @@ interface DetailsViewButtonsProps {
   onClickRight: () => void;
   leftYPadding?: string;
   leftTextSize?: string;
+  rightYPadding?: string;
+  rightTextSize?: string;
 }
 
 export default function DetailsViewButtons({
@@ -14,6 +16,8 @@ export default function DetailsViewButtons({
   onClickRight,
   leftYPadding = "py-3",
   leftTextSize,
+  rightYPadding = "py-3",
+  rightTextSize,
 }: DetailsViewButtonsProps) {
   return (
     <div className="flex items-center gap-2">
@@ -25,7 +29,7 @@ export default function DetailsViewButtons({
       </button>
       <button
         onClick={onClickRight}
-        className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-beige text-green-900 rounded-sm hover:bg-green-200 transition-colors cursor-pointer"
+        className={`w-full flex items-center justify-center gap-2 px-6 ${rightYPadding} ${rightTextSize} bg-beige text-green-900 rounded-sm hover:bg-green-200 transition-colors cursor-pointer`}
       >
         {labelRight}
       </button>
