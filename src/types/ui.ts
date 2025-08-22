@@ -140,8 +140,9 @@ export interface CreateCardProps {
 }
 
 export interface EmptyStateProps {
-  title: string;
-  description: string;
+  title?: string;
+  subtitle: string;
+  description?: string;
   icon?: React.ReactNode;
 }
 

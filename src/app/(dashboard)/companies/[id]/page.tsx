@@ -7,6 +7,10 @@ import ItemCard from "@/components/ui/ItemCard";
 import FormModal from "@/components/modals/FormModal";
 import EmptyState from "@/components/ui/EmptyState";
 import DetailsPageHeader from "@/components/layout/DetailsPageHeader";
+import DetailsViewButtons from "@/components/ui/buttons/DetailsViewButtons";
+import DropdownToggle from "@/components/ui/DropdownToggle";
+import StatCard from "@/components/ui/StatCard";
+import DetailsCard from "@/components/ui/DetailsCard";
 import { getIcon } from "@/lib/icons";
 
 export default function CompanyDetailsPage() {
@@ -22,8 +26,6 @@ export default function CompanyDetailsPage() {
   const company = {
     id: companyId,
     name: "Tech Corp",
-    description:
-      "Empresa innovadora especializada en desarrollo de software y soluciones tecnológicas. Con más de 10 años de experiencia en el mercado, ofrecemos servicios de consultoría, desarrollo web y aplicaciones móviles.",
     industry: "Tecnología",
     size: 50,
     culture: "Ambiente colaborativo, innovación constante, work-life balance",
@@ -68,79 +70,36 @@ export default function CompanyDetailsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           {/* Company Name Section */}
           <DetailsPageHeader
-            icon={getIcon("company", { size: 32})}
+            icon={getIcon("company", { size: 32 })}
             title={company.name}
-            
           />
           {/* Edit Button */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setShowCreatePositionModal(true)}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white rounded-sm hover:bg-green-700 transition-colors cursor-pointer"
-            >
-              Añadir Puesto
-            </button>
-            <button
-              onClick={() => setShowEditModal(true)}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-beige text-green-900 rounded-sm hover:bg-green-200 transition-colors cursor-pointer"
-            >
-              Editar Empresa
-            </button>
-          </div>
+          <DetailsViewButtons
+            labelLeft="Añadir Puesto"
+            onClickLeft={() => setShowCreatePositionModal(true)}
+            labelRight="Editar Empresa"
+            onClickRight={() => setShowEditModal(true)}
+          />
         </div>
 
         {/* Company Details */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Details */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Description */}
-            <div className="bg-white p-6 rounded-sm border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                Cultura Empresarial
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                {company.culture}
-              </p>
-            </div>
-          </div>
-
+          <DetailsCard
+            label="Cultura Empresarial"
+            description={company.culture}
+          />
           {/* Sidebar - Quick Stats */}
           <div className="space-y-4">
-            <div className="bg-white p-4 rounded-sm border border-gray-200">
-              <div className="flex items-center gap-2 mb-2">
-                {getIcon("employees")}
-                <span className="text-sm font-medium text-gray-600">
-                  Empleados
-                </span>
-              </div>
-              <p className="text-2xl font-bold text-gray-800">
-                {company.size}
-              </p>
-            </div>
-
-            <div className="bg-white p-4 rounded-sm border border-gray-200">
-              <div className="flex items-center gap-2 mb-2">
-                {getIcon("industry")}
-                <span className="text-sm font-medium text-gray-600">
-                  Industria
-                </span>
-              </div>
-              <p className="text-sm font-semibold text-gray-800">
-                {company.industry}
-              </p>
-            </div>
-
-            <div className="bg-white p-4 rounded-sm border border-gray-200">
-              <div className="flex items-center gap-2 mb-2">
-                {getIcon("position")}
-                <span className="text-sm font-medium text-gray-600">
-                  Puestos abiertos
-                </span>
-              </div>
-              <p className="text-2xl font-bold text-gray-800">
-                {positions.length}
-              </p>
-            </div>
+            <StatCard
+              icon={getIcon("employees")}
+              label="Empleados"
+              value={company.size}
+            />
+            <StatCard
+              icon={getIcon("industry")}
+              label="Industria"
+              value={company.industry}
+            />
           </div>
         </div>
       </div>
@@ -149,43 +108,24 @@ export default function CompanyDetailsPage() {
       <div className="mb-8">
         {positions.length === 0 ? (
           // Static empty state - no dropdown
-          <div>
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-2xl font-bold text-green-800 mb-2">
-                  Puestos ({positions.length})
-                </h2>
-              </div>
-            </div>
-            <EmptyState
-              title="No hay puestos abiertos"
-              description="Añade un nuevo puesto para esta empresa"
-              icon={getIcon("position", { size: 48, className: "mx-auto text-gray-400" })}
-            />
-          </div>
+          <EmptyState
+            title={`Puestos (${positions.length})`}
+            subtitle="No hay puestos abiertos"
+            description="Añade un nuevo puesto para esta empresa"
+            icon={getIcon("position", {
+              size: 48,
+              className: "mx-auto text-gray-400",
+            })}
+          />
         ) : (
           // Dropdown with toggle functionality
           <div>
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <button
-                  onClick={() => setShowPositions(!showPositions)}
-                  className="flex items-center gap-2 text-left"
-                >
-                  <h2 className="text-2xl font-bold text-green-800 hover:text-green-500 cursor-pointer">
-                    Puestos ({positions.length})
-                  </h2>
-                  <div className={`transform transition-transform cursor-pointer ${showPositions ? 'rotate-180' : ''}`}>
-                    {getIcon("toggle", { size: 24, className: "text-green-800" })}
-                  </div>
-                </button>
-                {showPositions && (
-                  <p className="text-green-900 mt-2">
-                    Puestos abiertos para esta empresa
-                  </p>
-                )}
-              </div>
-            </div>
+            <DropdownToggle
+              onClick={() => setShowPositions(!showPositions)}
+              isOpen={showPositions}
+              title={`Puestos (${positions.length})`}
+              subtitle="Puestos abiertos para esta empresa"
+            />
 
             {/* Positions Dropdown Content */}
             {showPositions && (
@@ -197,12 +137,13 @@ export default function CompanyDetailsPage() {
                       id={position.id.toString()}
                       title={position.title}
                       subtitle={`Candidatos: ${position.candidates || 0}`}
-                      additionalInfo={[
-                        `Nivel: ${position.level}`,
-                      ]}
+                      additionalInfo={[`Nivel: ${position.level}`]}
                       description={position.description}
                       detailsRoute={`/positions/${position.id}`}
-                      badge={getIcon("position", { size: 18, className: "text-beige" })}
+                      badge={getIcon("position", {
+                        size: 18,
+                        className: "text-beige",
+                      })}
                     />
                   ))}
                 </div>

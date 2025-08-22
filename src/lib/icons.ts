@@ -24,6 +24,7 @@ import { TbInfoSquareFilled } from "react-icons/tb";
 import { IoLogOutSharp } from "react-icons/io5";
 import { IoGridSharp } from "react-icons/io5";
 import { FaList } from "react-icons/fa6";
+import { MdManageAccounts } from "react-icons/md";
 
 type IconType =
   | "email"
@@ -51,7 +52,8 @@ type IconType =
   | "grid"
   | "list"
   | "edit"
-  | "more";
+  | "more"
+  | "position-level";
 
 interface IconOptions {
   size?: number;
@@ -149,6 +151,8 @@ export const getIcon = (
       return React.createElement(EditIcon, { size, className });
     case "more":
       return React.createElement(ArrowRightIcon, { size, className });
+    case "position-level":
+      return React.createElement(MdManageAccounts, { size, className });
     default:
       return null;
   }

@@ -4,9 +4,14 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import BackButton from "@/components/ui/buttons/BackButton";
 import ItemCard from "@/components/ui/ItemCard";
+import StatCard from "@/components/ui/StatCard";
 import FormModal from "@/components/modals/FormModal";
 import EmptyState from "@/components/ui/EmptyState";
 import DetailsPageHeader from "@/components/layout/DetailsPageHeader";
+import DetailsViewButtons from "@/components/ui/buttons/DetailsViewButtons";
+import DropdownToggle from "@/components/ui/DropdownToggle";
+import QuestionsStatusCard from "@/features/positions/components/QuestionsStatusCard";
+import DetailsCard from "@/components/ui/DetailsCard";
 import { getIcon } from "@/lib/icons";
 
 export default function PositionDetailsPage() {
@@ -18,42 +23,6 @@ export default function PositionDetailsPage() {
   const [showCreateCandidateModal, setShowCreateCandidateModal] =
     useState(false);
   const [showCandidates, setShowCandidates] = useState(false);
-
-  // Helper function to get the appropriate icon and status for generated questions
-  const getQuestionsStatus = (questions: any) => {
-    if (!questions) {
-      return {
-        icon: getIcon("creation-pending", { className: "text-gray-500" }),
-        status: "Pendiente",
-      };
-    }
-
-    // Check if questions object has sections with actual questions
-    const hasSections =
-      questions.sections &&
-      Array.isArray(questions.sections) &&
-      questions.sections.length > 0;
-    const hasQuestions =
-      hasSections &&
-      questions.sections.some(
-        (section: any) =>
-          section.questions &&
-          Array.isArray(section.questions) &&
-          section.questions.length > 0
-      );
-
-    if (hasQuestions) {
-      return {
-        icon: getIcon("analysis-success", { className: "text-green-600" }),
-        status: "Generadas",
-      };
-    } else {
-      return {
-        icon: getIcon("analysis-fail", { className: "text-red-500" }),
-        status: "Sin contenido",
-      };
-    }
-  };
 
   const position = {
     id: positionId,
@@ -106,84 +75,39 @@ export default function PositionDetailsPage() {
           />
 
           {/* Edit Button */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setShowCreateCandidateModal(true)}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-green-600 text-sm text-white rounded-sm hover:bg-green-700 transition-colors cursor-pointer"
-            >
-              Añadir Candidato
-            </button>
-            <button
-              onClick={() => setShowEditModal(true)}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-beige text-green-900 rounded-sm hover:bg-green-200 transition-colors cursor-pointer"
-            >
-              Editar Puesto
-            </button>
-          </div>
+          <DetailsViewButtons
+            labelLeft="Añadir Candidato"
+            onClickLeft={() => setShowCreateCandidateModal(true)}
+            labelRight="Editar Puesto"
+            onClickRight={() => setShowEditModal(true)}
+            leftYPadding="py-3.5"
+            leftTextSize="text-sm"
+          />
         </div>
 
         {/* Position Details */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Details */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Description */}
-            <div className="bg-white p-6 rounded-sm border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                Descripción del Puesto
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                {position.description}
-              </p>
-            </div>
-          </div>
+          <DetailsCard
+            label="Descripción del Puesto"
+            description={position.description}
+          />
 
           {/* Sidebar - Quick Stats */}
           <div className="space-y-4">
-            <div className="bg-white p-4 rounded-sm border border-gray-200">
-              <div className="flex items-center gap-2 mb-2">
-                {getIcon("company")}
-                <span className="text-sm font-medium text-gray-600">
-                  Empresa
-                </span>
-              </div>
-              <p className="text-2xl font-bold text-gray-800">
-                {position.company}
-              </p>
-            </div>
-
-            <div className="bg-white p-4 rounded-sm border border-gray-200">
-              <div className="flex items-center gap-2 mb-2">
-                {getIcon("question")}
-                <span className="text-sm font-medium text-gray-600">
-                  Preguntas generadas
-                </span>
-              </div>
-              {(() => {
-                const questionStatus = getQuestionsStatus(
-                  position.generated_questions
-                );
-                return (
-                  <div className="flex items-center gap-2">
-                    {questionStatus.icon}
-                    <p className="text-lg font-bold text-gray-800">
-                      {questionStatus.status}
-                    </p>
-                  </div>
-                );
-              })()}
-            </div>
-
-            <div className="bg-white p-4 rounded-sm border border-gray-200">
-              <div className="flex items-center gap-2 mb-2">
-                {getIcon("candidates")}
-                <span className="text-sm font-medium text-gray-600">
-                  Candidatos inscritos
-                </span>
-              </div>
-              <p className="text-2xl font-bold text-gray-800">
-                {position.candidates}
-              </p>
-            </div>
+            <StatCard
+              icon={getIcon("company")}
+              label="Empresa"
+              value={position.company}
+            />
+            {/**Level stat */}
+            <StatCard
+              icon={getIcon("position-level", { size: 18 })}
+              label="Nivel"
+              value={position.level}
+            />
+            <QuestionsStatusCard
+              generatedQuestions={position.generated_questions}
+            />
           </div>
         </div>
       </div>
@@ -192,50 +116,24 @@ export default function PositionDetailsPage() {
       <div className="mb-8">
         {candidates.length === 0 ? (
           // Static empty state - no dropdown
-          <div>
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-2xl font-bold text-green-800 mb-2">
-                  Candidatos ({candidates.length})
-                </h2>
-              </div>
-            </div>
             <EmptyState
-              title="No hay candidatos inscritos"
+              title={`Candidatos (${candidates.length})`}
+              subtitle="No hay candidatos inscritos"
               description="Añade un nuevo candidato para esta posición"
               icon={getIcon("add-candidate", {
                 size: 48,
                 className: "text-gray-400 mx-auto",
               })}
             />
-          </div>
         ) : (
           // Dropdown with toggle functionality
           <div>
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <button
-                  onClick={() => setShowCandidates(!showCandidates)}
-                  className="flex items-center gap-2 text-left"
-                >
-                  <h2 className="text-2xl font-bold text-green-800 hover:text-green-500 cursor-pointer">
-                    Candidatos ({candidates.length})
-                  </h2>
-                  <div
-                    className={`transform transition-transform cursor-pointer ${
-                      showCandidates ? "rotate-180" : ""
-                    }`}
-                  >
-                    {getIcon("toggle", { size: 24, className: "text-green-800" })}
-                  </div>
-                </button>
-                {showCandidates && (
-                  <p className="text-green-900 mt-2">
-                    Candidatos inscritos para este puesto
-                  </p>
-                )}
-              </div>
-            </div>
+            <DropdownToggle
+              onClick={() => setShowCandidates(!showCandidates)}
+              isOpen={showCandidates}
+              title={`Candidatos (${candidates.length})`}
+              subtitle="Candidatos inscritos para este puesto"
+            />
 
             {/* Candidates Dropdown Content */}
             {showCandidates && (
@@ -252,7 +150,7 @@ export default function PositionDetailsPage() {
                       ]}
                       description={candidate.description} //put highlights here
                       detailsRoute={`/candidates/${candidate.id}`}
-                      badge={getIcon("candidate", {className: "text-beige"})}
+                      badge={getIcon("candidate", { className: "text-beige" })}
                     />
                   ))}
                 </div>

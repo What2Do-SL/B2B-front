@@ -8,9 +8,11 @@ import EmptyState from "@/components/ui/EmptyState";
 import ScoreCard from "@/features/candidates/components/ScoreCard";
 import DetailsScoreCard from "@/features/candidates/components/DetailsScoreCard";
 import KeyStrengths from "@/features/candidates/components/KeyStrengths";
-import StatCard from "@/features/candidates/components/StatCard";
+import StatCard from "@/components/ui/StatCard";
 import MatchingStatusCard from "@/features/candidates/components/MatchingStatusCard";
 import DetailsPageHeader from "@/components/layout/DetailsPageHeader";
+import DetailsViewButtons from "@/components/ui/buttons/DetailsViewButtons";
+import DropdownToggle from "@/components/ui/DropdownToggle";
 import { formatDate } from "@/lib/utils";
 import { getIcon } from "@/lib/icons";
 
@@ -107,11 +109,10 @@ export default function CandidateDetailsPage() {
       {/* Back Button */}
       <BackButton />
 
-      {/* Position Header */}
+      {/* Candidate Header */}
       <div className="mt-6 ">
-        {/* Position Name and Icon */}
+        {/* Candidate Name and Icon */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-          {/* Position Name Section */}
           <DetailsPageHeader
             icon={getIcon("candidate", { size: 32 })}
             title={candidate.name}
@@ -119,30 +120,21 @@ export default function CandidateDetailsPage() {
           />
 
           {/* Edit Button */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setShowDownloadCVModal(true)}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-green-600 text-sm text-white rounded-sm hover:bg-green-700 transition-colors cursor-pointer"
-            >
-              Descargar CV
-            </button>
-            <button
-              onClick={() => setShowLinkExtendModal(true)}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-beige text-green-900 rounded-sm hover:bg-green-200 transition-colors cursor-pointer"
-            >
-              Extender enlace
-            </button>
-          </div>
+          <DetailsViewButtons
+            labelLeft="Descargar CV"
+            onClickLeft={() => setShowDownloadCVModal(true)}
+            labelRight="Extender enlace"
+            onClickRight={() => setShowLinkExtendModal(true)}
+          />
         </div>
 
-        {/* Position Details */}
+        {/* Candidate Details */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Details */}
           <div className="lg:col-span-2 space-y-6">
             {matchingStatus === "pending" || matchingStatus === "empty" ? (
               // Static empty state - no dropdown
               <EmptyState
-                title="El candidato aún no ha completado el cuestionario"
+                subtitle="El candidato aún no ha completado el cuestionario"
                 description="Asegúrate de que el candidato haya recibido el correo."
                 icon={getIcon("analytics", {
                   size: 48,
@@ -203,37 +195,20 @@ export default function CandidateDetailsPage() {
         {matchingStatus === "completed" && (
           // Dropdown with toggle functionality
           <div>
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <button
-                  onClick={() => setShowAnalysisDetails(!showAnalysisDetails)}
-                  className="flex items-center gap-2 text-left"
-                >
-                  <h2 className="text-2xl font-bold text-green-800 hover:text-green-500 cursor-pointer">
-                    Detalles
-                  </h2>
-                  <div
-                    className={`transform transition-transform cursor-pointer ${
-                      showAnalysisDetails ? "rotate-180" : ""
-                    }`}
-                  >
-                    {getIcon("toggle", {
-                      size: 24,
-                      className: "text-green-800",
-                    })}
-                  </div>
-                </button>
-                {showAnalysisDetails && (
-                  <p className="text-green-900 mt-2">
-                    Detalles del análisis realizado para{" "}
-                    <span className="font-bold">
-                      {matching_breakdown.position.title} -{" "}
-                      {matching_breakdown.position.company}
-                    </span>
-                  </p>
-                )}
-              </div>
-            </div>
+            <DropdownToggle
+              onClick={() => setShowAnalysisDetails(!showAnalysisDetails)}
+              isOpen={showAnalysisDetails}
+              title="Detalles"
+              subtitle={
+                <>
+                  Detalles del análisis realizado para{" "}
+                  <span className="font-bold">
+                    {matching_breakdown.position.title} -{" "}
+                    {matching_breakdown.position.company}
+                  </span>
+                </>
+              }
+            />
 
             {/* Analysis Details Dropdown Content */}
             {showAnalysisDetails && (
@@ -294,15 +269,15 @@ export default function CandidateDetailsPage() {
         )}
       </div>
 
-      {/* Edit Position Modal */}
+      {/* Extend Link Modal */}
       <FormModal
         isOpen={showLinkExtendModal}
         onClose={() => setShowLinkExtendModal(false)}
         title="Extender Enlace"
         variant="green"
       >
-        {/* <EditPositionForm
-          positionId={positionId}
+        {/* <ExtendLinkForm
+          candidateId={candidateId}
           onSuccess={() => setShowEditModal(false)}
         /> */}
         <div className="p-4 text-center text-gray-600">
@@ -310,7 +285,7 @@ export default function CandidateDetailsPage() {
         </div>
       </FormModal>
 
-      {/* Create Candidate Modal */}
+      {/* Download CV Modal */}
       <FormModal
         isOpen={showDownloadCVModal}
         onClose={() => setShowDownloadCVModal(false)}
@@ -318,7 +293,7 @@ export default function CandidateDetailsPage() {
         variant="green"
       >
         {/* <DownloadCVForm
-          positionId={positionId}
+          candidateId={candidateId}
           onSuccess={() => setShowDownloadCVModal(false)}
         /> */}
         <div className="p-4 text-center text-gray-600">
